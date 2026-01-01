@@ -31,7 +31,6 @@ int main(){
 	ray::Sound click = ray::LoadSound("OST/click.wav");
 	ray::Sound woouw = ray::LoadSound("OST/wouw.wav");
 
-	//ray::Texture backgroundImg = ray::LoadTexture("images/backgroundDC.png");
 	ray::Texture nextButton = ray::LoadTexture("images/NextButton.png");
 	ray::Texture nextButton_on = ray::LoadTexture("images/NextButton_on.png");
 
@@ -70,9 +69,10 @@ int main(){
 	const float plushY = (524 - plushies[randomPlush].height * scale)/2;
 
 	const float handX = (700 - leftHandsV[0].width * scale*1.1) + 20;
-	const float handY = (524 - leftHandsV[0].height * scale*1.1) + 20;
+	const float handY = (524 - leftHandsV[0].height * scale*1.1) + 50;
 
 	int plushAtual = 0;
+	bool handShow = false; 
 
 	
 	float deltaShake = 5.0f;
@@ -84,6 +84,7 @@ int main(){
 
 	ray::PlayMusicStream(bubbles);
 	bubbles.looping = true;
+
 
 	while(!ray::WindowShouldClose()){
 		ray::Vector2 mousePos = ray::GetMousePosition();
@@ -108,7 +109,6 @@ int main(){
 		ray::BeginDrawing();
 			// render background
 			ray::ClearBackground(ray::BLACK);
-			// ray::DrawTexture(backgroundImg, 0, 0, ray::WHITE);
 
 			// render plushies 
 			if(ray::CheckCollisionPointRec(mousePos, buttonPlush)){
@@ -120,9 +120,18 @@ int main(){
 				ray::DrawTextureEx(plushies[randomPlushies[plushAtual]], {plushX, plushY},  0,  scale,  ray::WHITE);
 			}
 
-			// render hands 
-			if(ray::IsMouseButtonDown(ray::MOUSE_BUTTON_LEFT) && (ray::CheckCollisionPointRec(mousePos, buttonPlush) || ray::CheckCollisionPointRec(mousePos, buttonN))){
-				ray::DrawTextureEx(hightHandsV[framHands-1], {handX, handY}, 0,  scale*1.1,  ray::WHITE);
+			// render hands  ------ ray::CheckCollisionPointRec(mousePos, buttonPlush) -- ray::CheckCollisionPointRec(mousePos, buttonN)
+			handShow = true; 
+			if(ray::IsMouseButtonDown(ray::MOUSE_BUTTON_LEFT)){
+				if(ray::CheckCollisionPointRec(mousePos, buttonN)){
+					ray::DrawTextureEx(hightHandsV[framHands-1], {handX, handY}, 0,  scale*1.1,  ray::WHITE);
+
+				} else if (ray::CheckCollisionPointRec(mousePos, buttonPlush) ) {
+					ray::DrawTextureEx(hightHandsV[framHands-2], {handX - 40, handY + (shake.y)*2}, 0,  scale*1.1,  ray::WHITE);
+					ray::DrawTextureEx(leftHandsV[framHands-2], {(handX*(1/2) - 40), handY - (shake.y)*2}, 0,  scale*1.1,  ray::WHITE);
+					handShow = false;
+				}
+			
 			} else if (ray::IsMouseButtonDown(ray::MOUSE_BUTTON_RIGHT) && ray::CheckCollisionPointRec(mousePos, buttonPlush)) { 
 				
 				// nothing yet...
@@ -130,7 +139,9 @@ int main(){
 			} else {
 				ray::DrawTextureEx(hightHandsV[handAtual], {handX, handY}, 0,  scale*1.1,  ray::WHITE);
 			}
-			ray::DrawTextureEx(leftHandsV[handAtual], {handX*(1/2), handY},   0,  scale*1.1,  ray::WHITE);
+			if(handShow){
+				ray::DrawTextureEx(leftHandsV[handAtual], {handX*(1/2), handY},   0,  scale*1.1,  ray::WHITE);
+			}
 
 
 			// render button
@@ -160,8 +171,6 @@ int main(){
 		ray::UnloadTexture(hightHandsV[t]);
 		ray::UnloadTexture(leftHandsV[t]);
 	}
-
-	//ray::UnloadTexture(backgroundImg);
 	ray::UnloadTexture(nextButton);
 	ray::UnloadTexture(nextButton_on);
 	ray::UnloadMusicStream(bubbles);
