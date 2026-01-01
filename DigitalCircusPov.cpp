@@ -78,17 +78,21 @@ int main(){
 	float deltaShake = 5.0f;
 	ray::Vector2 shake = {0.0f, 0.0f};
 
-	ray::Rectangle buttonN = {plushX, plushY - 100, nextButton.width * scale, nextButton.height * scale};
-	ray::Rectangle buttonPlush = {plushX, plushY, plushies[0].width * scale, plushies[0].height * scale};
-	
 
 	ray::PlayMusicStream(bubbles);
 	bubbles.looping = true;
 
 
 	while(!ray::WindowShouldClose()){
-		ray::Vector2 mousePos = ray::GetMousePosition();
 		ray::UpdateMusicStream(bubbles);
+
+		// mouse coordinates :: parallax effect
+		ray::Vector2 mousePos = ray::GetMousePosition();
+		ray::Vector2 center = {ray::GetScreenWidth()/2.0f, ray::GetScreenHeight()/2.0f};
+		ray::Vector2 deltaMov = {(mousePos.x - center.x) * 0.7f, (mousePos.y - center.y) * 0.7f};
+
+		ray::Rectangle buttonN = {plushX - deltaMov.x, (plushY - 150) - deltaMov.y, nextButton.width * scale, nextButton.height * scale};
+		ray::Rectangle buttonPlush = {plushX - deltaMov.x, plushY - deltaMov.y, plushies[0].width * scale, plushies[0].height * scale};
 
 		// timer
 		timer += ray::GetFrameTime();
@@ -102,6 +106,7 @@ int main(){
 			} 
 		}
 
+
 		// shake
 		shake.x = ray::GetRandomValue(-deltaShake, deltaShake);
 		shake.y = ray::GetRandomValue(-deltaShake, deltaShake);
@@ -112,15 +117,33 @@ int main(){
 
 			// render plushies 
 			if(ray::CheckCollisionPointRec(mousePos, buttonPlush)){
-				ray::DrawTextureEx(plushies[randomPlushies[plushAtual]], {plushX + shake.x, plushY + shake.y},  0,  scale,  ray::WHITE);
+				ray::DrawTextureEx(plushies[randomPlushies[plushAtual]], {plushX + shake.x - deltaMov.x, plushY + shake.y - deltaMov.y},  0,  scale,  ray::WHITE);
 				if(ray::IsMouseButtonPressed(ray::MOUSE_BUTTON_LEFT)){
 					ray::PlaySound(woouw);
 				}
 			} else {
-				ray::DrawTextureEx(plushies[randomPlushies[plushAtual]], {plushX, plushY},  0,  scale,  ray::WHITE);
+				ray::DrawTextureEx(plushies[randomPlushies[plushAtual]], {plushX - deltaMov.x, plushY - deltaMov.y},  0,  scale,  ray::WHITE);
 			}
 
-			// render hands  ------ ray::CheckCollisionPointRec(mousePos, buttonPlush) -- ray::CheckCollisionPointRec(mousePos, buttonN)
+
+			// render button
+			if(ray::CheckCollisionPointRec(mousePos, buttonN)){
+
+				ray::DrawTextureEx(nextButton_on, {(plushX) + shake.x - deltaMov.x, (plushY - 150) + shake.y - deltaMov.y}, 0, scale*1.05, ray::WHITE);
+				
+				if(ray::IsMouseButtonPressed(ray::MOUSE_LEFT_BUTTON)){
+					ray::PlaySound(click);
+					plushAtual++;
+					if(plushAtual >= 21){
+						plushAtual = 0;
+					}
+				}
+			} else {
+				ray::DrawTextureEx(nextButton, {plushX - deltaMov.x, (plushY - 150) - deltaMov.y}, 0, scale, ray::WHITE);
+			}
+
+
+			// render hands
 			handShow = true; 
 			if(ray::IsMouseButtonDown(ray::MOUSE_BUTTON_LEFT)){
 				if(ray::CheckCollisionPointRec(mousePos, buttonN)){
@@ -130,6 +153,8 @@ int main(){
 					ray::DrawTextureEx(hightHandsV[framHands-2], {handX - 40, handY + (shake.y)*2}, 0,  scale*1.1,  ray::WHITE);
 					ray::DrawTextureEx(leftHandsV[framHands-2], {(handX*(1/2) - 40), handY - (shake.y)*2}, 0,  scale*1.1,  ray::WHITE);
 					handShow = false;
+				} else {
+					ray::DrawTextureEx(hightHandsV[handAtual], {handX, handY}, 0,  scale*1.1,  ray::WHITE);
 				}
 			
 			} else if (ray::IsMouseButtonDown(ray::MOUSE_BUTTON_RIGHT) && ray::CheckCollisionPointRec(mousePos, buttonPlush)) { 
@@ -143,22 +168,6 @@ int main(){
 				ray::DrawTextureEx(leftHandsV[handAtual], {handX*(1/2), handY},   0,  scale*1.1,  ray::WHITE);
 			}
 
-
-			// render button
-			if(ray::CheckCollisionPointRec(mousePos, buttonN)){
-
-				ray::DrawTextureEx(nextButton_on, {(plushX) + shake.x, (plushY - 100) + shake.y}, 0, scale*1.05, ray::WHITE);
-				
-				if(ray::IsMouseButtonPressed(ray::MOUSE_LEFT_BUTTON)){
-					ray::PlaySound(click);
-					plushAtual++;
-					if(plushAtual >= 21){
-						plushAtual = 0;
-					}
-				}
-			} else {
-				ray::DrawTextureEx(nextButton, {plushX, plushY - 100}, 0, scale, ray::WHITE);
-			}
 		ray::EndDrawing();
 	}
 
