@@ -134,7 +134,7 @@ int main(){
 				if(ray::IsMouseButtonPressed(ray::MOUSE_LEFT_BUTTON)){
 					ray::PlaySound(click);
 					plushAtual++;
-					if(plushAtual >= 21){
+					if(plushAtual >= 50){
 						plushAtual = 0;
 					}
 				}
