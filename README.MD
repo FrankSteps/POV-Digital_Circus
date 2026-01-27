@@ -1,8 +1,21 @@
 # Pov Digital Circus 
 ![plushie caine](plushieCaine.png)
 
-# Credits
+# Requirements
+ - g++
+ - Raylib 
+ - Cmake 
 
+# Compiling and running 
+
+```bash
+    git clone https://github.com/FrankSteps/POV_DigitalCircus
+    cd POV_DigitalCircus
+    make
+    make run 
+```
+
+# Credits
 Original project:  
 https://scratch.mit.edu/projects/1191104157  
 Thanks, FUZZIE-WEASEL!
