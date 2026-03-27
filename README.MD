@@ -27,8 +27,7 @@ make run
 - Queenie 
 - Gangle
 
-> <strong>Note:</strong> Bubble is extremely rare… like, rare as 
-<img src="palavreado.png" height="40" style="vertical-align: middle;">
+> Note: Bubble is extremely rare... like, rare as ![%$@!#](palavreado.png)
 
 ## Credits
 > Original project:  
