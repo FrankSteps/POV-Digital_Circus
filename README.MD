@@ -1,22 +1,37 @@
 # Pov Digital Circus 
 ![plushie caine](plushieCaine.png)
 
-# Requirements
+## Requirements
  - g++
- - Raylib 
- - Cmake 
+ - Raylib
+ - Cmake
 
-# Compiling and running 
+## Compiling and running 
 
 ```bash
-    git clone https://github.com/FrankSteps/POV_DigitalCircus
-    cd POV_DigitalCircus
-    make
-    make run 
+git clone https://github.com/FrankSteps/pov-digital-circus
+cd pov-digital-circus
+make
+make run 
 ```
 
-# Credits
-Original project:  
+## Characters 
+- Kinger 
+- Caine
+- Jax (Jaxy)
+- Zooble 
+- Ragatha
+- Bubble
+- Pomni  
+- Gummigoo
+- Queenie 
+- Gangle
+
+> <strong>Note:</strong> Bubble is extremely rare… like, rare as 
+<img src="palavreado.png" height="40" style="vertical-align: middle;">
+
+## Credits
+> Original project:  
 https://scratch.mit.edu/projects/1191104157  
 Thanks, FUZZIE-WEASEL!
 

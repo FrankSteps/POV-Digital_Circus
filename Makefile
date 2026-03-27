@@ -2,8 +2,8 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-TARGET = DigitalCircusPov
-SRC = DigitalCircusPov.cpp
+TARGET = builds/DigitalCircusPov
+SRC = src/DigitalCircusPov.cpp
 
 all: $(TARGET)
 

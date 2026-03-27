@@ -10,7 +10,6 @@ Music:         The free design
 sound effects: FUZZIE-WEASEL
 
 Plushies images: https://glitchproductions.store/collections/the-amazing-digital-circus
-background:      The Amazing Digital Circus: Episode 2; 23:20
 */
 
 // libraries
@@ -27,27 +26,28 @@ int main(){
 	ray::InitWindow(700, 524, "POV: Digital Circus"); 
 	ray::InitAudioDevice();
 
-	ray::Music bubbles = ray::LoadMusicStream("OST/bubbles.mp3");
-	ray::Sound click = ray::LoadSound("OST/click.wav");
-	ray::Sound woouw = ray::LoadSound("OST/wouw.wav");
+	ray::Music bubbles = ray::LoadMusicStream("src/OST/bubbles.mp3");
+	ray::Sound click = ray::LoadSound("src/OST/click.wav");
+	ray::Sound woouw = ray::LoadSound("src/OST/wouw.wav");
 
-	ray::Texture nextButton = ray::LoadTexture("images/NextButton.png");
-	ray::Texture nextButton_on = ray::LoadTexture("images/NextButton_on.png");
+	ray::Texture nextButton = ray::LoadTexture("src/images/NextButton.png");
+	ray::Texture nextButton_on = ray::LoadTexture("src/images/NextButton_on.png");
 
 	const int framHands = 11;
-	const int quantPlush = 7;
+	const int quantPlush = 10;
 
 	std::vector <ray::Texture> plushies(quantPlush); 
 	std::vector <ray::Texture> leftHandsV(framHands);
 	std::vector <ray::Texture> hightHandsV(framHands);
-	std::vector <int> randomPlushies(50);
+	std::vector <int> randomPlushies(70);
 
 	for(int i = 0; i < quantPlush; i++){
-		plushies[i] = ray::LoadTexture(("images/plushies/p" + std::to_string(i) + ".png").c_str());
+		plushies[i] = ray::LoadTexture(("src/images/plushies/p" + std::to_string(i) + ".png").c_str());
 	}
+
 	for(int i = 0; i < framHands; i++){
-		leftHandsV[i] = ray::LoadTexture(("images/hands/leftH/leftH_" + std::to_string(i) + ".png").c_str());
-		hightHandsV[i] = ray::LoadTexture(("images/hands/highH/highH_" + std::to_string(i) + ".png").c_str());
+		leftHandsV[i] = ray::LoadTexture(("src/images/hands/leftH/leftH_" + std::to_string(i) + ".png").c_str());
+		hightHandsV[i] = ray::LoadTexture(("src/images/hands/highH/highH_" + std::to_string(i) + ".png").c_str());
 	}
 
 	int handAtual = 0;
@@ -56,11 +56,16 @@ int main(){
 
 	unsigned seed = time(0);
 	srand(seed);
-	int randomPlush;
+	int randomPlush = 0;
 
-	for(int i = 0; i < 50; i++){
-		randomPlush = rand() % quantPlush; 
-		randomPlushies[i] = randomPlush; 
+	for (int i = 0; i < 70; i++) {
+	    if (rand() % 100000 == 0) {
+	        randomPlushies[i] = 9;
+	    } else {
+	        do {
+	            randomPlushies[i] = rand() % quantPlush;
+	        } while (randomPlushies[i] == 9);
+	    }
 	}
 
 	const float scale = 0.6f;
